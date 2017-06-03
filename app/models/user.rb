@@ -1,19 +1,19 @@
 require 'openssl'
+require 'unicode'
 
 class User < ActiveRecord::Base
-
   ITERATIONS = 20000
   DIGEST = OpenSSL::Digest::SHA256.new
   has_many :questions
-  attr_accessor :password
+  attr_accessor :password, :username
 
   validates :email, :username, presence: true
-  validates :email, :username, uniqueness: true
-
+  # validates :email, :username, uniqueness: true
+  validates_uniqueness_of :email, :username, case_sensitive: false
   validates_presence_of :password, on: :create
   validates_confirmation_of :password
-
   before_save :encrypt_password
+  before_validation :convert_username_lowercase
 
   #проверка формата email по символам
   def email_ok?(email)
@@ -54,6 +54,13 @@ class User < ActiveRecord::Base
   def self.hash_to_string(password_hash)
     password_hash.unpack('H*')[0]
   end
+
+  def convert_username_lowercase
+    write_attribute(:username, Unicode::downcase(username))
+  end
+
 end
+
+
 
 
