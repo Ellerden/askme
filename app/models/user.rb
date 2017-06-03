@@ -1,13 +1,12 @@
 require 'openssl'
-# gem "openssl"
 
 class User < ActiveRecord::Base
 
   ITERATIONS = 20000
   DIGEST = OpenSSL::Digest::SHA256.new
-
   has_many :questions
   attr_accessor :password
+
   validates :email, :username, presence: true
   validates :email, :username, uniqueness: true
 
@@ -16,11 +15,17 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
 
-
-  def self.hash_to_string(password_hash)
-    password_hash.unpack('H*')[0]
+  #проверка формата email по символам
+  def email_ok?(email)
+    email_regexp = /^[a-z\d_.\-]+@([a-z\d.\-])+\.[a-z]+$/i
+    !!(email =~ (email_regexp))
   end
 
+  # проверка макс длины юзернейма (не больше 40 символов) и соответсвию симфолов – латиница, цифры, _
+  def username_ok?(username)
+    username_regexp = /\w{3,40}/i
+    !!(username =~ username_regexp)
+  end
 
   def encrypt_password
   if self.password.present?
@@ -46,6 +51,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.hash_to_string(password_hash)
+    password_hash.unpack('H*')[0]
+  end
 end
 
 
