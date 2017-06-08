@@ -1,10 +1,13 @@
 class Question < ActiveRecord::Base
   belongs_to :user
   validates :text, :user, presence: true
+  validate :length_ok?
 
-  def lenght_ok?(text)
-    text_regexp = /.{1,255}/i
-    !!(text =~ text_regexp)
+  def length_ok?
+    text_regexp = /.{5,255}/i
+    if !(self.text =~ text_regexp)
+      @errors.add(:email, "text should be up to 255 characters")
+    end
   end
 
 end

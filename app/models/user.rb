@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   validate :email_ok?
   before_validation :downcase_username
   before_save :encrypt_password
-  
+
   #проверка формата email по символам
   def email_ok?
     email_regexp = /^[a-z\d_.\-]+@([a-z\d.\-])+\.[a-z]+$/i
