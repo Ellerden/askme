@@ -37,6 +37,12 @@
 
 <div class="column-3-4">
   <div class="user-questions buffer-both">
+    <div class="question-contente">
+      <h2 class="title-small text-center">Всего
+      <%= @questions.count %>
+      <%= @declension %>
+      </h2>
+    </div>
     <div class="questions-list">
       <% @questions.each do |question| %>
         <%= render partial: 'questions/question', object: question %>
