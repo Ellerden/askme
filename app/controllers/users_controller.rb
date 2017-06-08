@@ -1,24 +1,6 @@
 class UsersController < ApplicationController
   def index
-
     @users = User.all
-
-    # @users = [
-    #   User.new(
-    #   id: 1,
-    #   name: 'Dasha',
-    #   username: 'cardu',
-    #   avatar_url: 'http://www.hbw.com/sites/default/files/styles/large_a/public/figures/hbw16/jpg/16_27_232_Euphonia_anneae_m.jpg'
-    #   ),
-    #   User.new(
-    #     id: 2,
-    #     name: 'Ira',
-    #     username: 'charbon',
-    #     avatar_url: 'http://www.hbw.com/sites/default/files/styles/large_a/public/figures/hbw16/jpg/16_27_232_Euphonia_anneae_m.jpg'
-    #   )
-    # ]
-    #
-
   end
 
   def new
@@ -27,7 +9,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.save
+    if @user.save
+      redirect_to root_url, notice: 'Ура! Регистрация прошла успешно!'
+    else
+      render 'new'
+    end
   end
 
   def edit
@@ -46,7 +32,6 @@ class UsersController < ApplicationController
     ]
 
     @declension = declension(@questions.count, "вопрос", "вопроса", "вопросов")
-
     @new_question = Question.new
   end
 

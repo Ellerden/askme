@@ -11,19 +11,25 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :username, case_sensitive: false
   validates_presence_of :password, on: :create
   validates_confirmation_of :password
+  validate :username_ok?
+  validate :email_ok?
+  before_validation :downcase_username
   before_save :encrypt_password
-  before_create :downcase_username, :username_ok?, :email_ok?
-
+  
   #проверка формата email по символам
   def email_ok?
     email_regexp = /^[a-z\d_.\-]+@([a-z\d.\-])+\.[a-z]+$/i
-    !!(self.email =~ email_regexp)
+    if !(self.email =~ email_regexp)
+      @errors.add(:email, "should be in email format")
+    end
   end
 
   # проверка макс длины юзернейма (не больше 40 символов) и соответсвию симфолов – латиница, цифры, _
   def username_ok?
     username_regexp = /\w{3,40}/i
-    !!(self.username =~ username_regexp)
+    if !(self.username =~ username_regexp)
+      @errors.add(:username, "should be between 3 and 40 characters")
+    end
   end
 
   def encrypt_password
