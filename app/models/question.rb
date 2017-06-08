@@ -6,7 +6,7 @@ class Question < ActiveRecord::Base
   def length_ok?
     text_regexp = /.{5,255}/i
     if !(self.text =~ text_regexp)
-      @errors.add(:email, "text should be up to 255 characters")
+      @errors.add(:text, "should be up to 255 characters")
     end
   end
 
