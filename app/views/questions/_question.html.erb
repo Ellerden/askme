@@ -28,9 +28,13 @@
       <%# Определяем какая будет иконка, если у вопроса нет ответа, то иконка %>
       <%# овтета на письмо, иначе — карандашик %>
       <div class="question-actions">
-        <%= link_to fa_icon(action_icon), edit_question_path(question) %>
-        <%= link_to fa_icon('trash-o'), question_path(question),
-                    method: :delete, data: {confirm: 'Точно удалить вопрос?'} %>
+        <%= link_to edit_question_path(question) do %>
+             <i class="fa <%= question.answer.blank? ? 'fa-reply' : 'fa-pencil' %>"> </i>
+        <% end %>
+
+        <%= link_to question_path(question), method: :delete, data: {confirm: 'Точно удалить вопрос?'} do %>
+            <i class="fa fa-trash"></i>
+        <% end %>
       </div>
   <% end %>
 </div>

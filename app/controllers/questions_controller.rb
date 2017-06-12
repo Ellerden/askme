@@ -36,7 +36,7 @@ class QuestionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
   def load_question
-      @question = Question.find(params[:id])
+    @question = Question.find(params[:id])
   end
 
   def question_params
