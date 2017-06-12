@@ -42,10 +42,15 @@
 <div class="column-3-4">
   <div class="user-questions buffer-both">
     <div class="question-contente">
-      <h2 class="title-small text-center">Всего
-      <%= @questions.count %>
-      <%= @declension %>
-      </h2>
+
+        <% if @questions.count == 0 %>
+          <h2 class="title-small text-center">Пока нет вопросов</h2>
+    <% else %>
+          <h2 class="title-small text-center">Всего
+            <%= @questions.count %>
+            <%= declension(@questions.count, 'вопрос', 'вопроса', 'вопросов') %>
+          </h2>
+      <% end %>
     </div>
     <div class="questions-list">
       <% @questions.each do |question| %>
